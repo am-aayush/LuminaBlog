@@ -9,6 +9,7 @@ import {
   Eye,
   ArrowRight,
   CircleUser ,
+  Heart
 } from "lucide-react";
 import Avatar from "../components/ui/Avatar";
 import appwriteService from "../appwrite/config";
@@ -240,7 +241,11 @@ function ViewAllPost({ setPage, openPost }) {
                     <span className="flex items-center gap-1">
                       <Clock className="w-3 h-3" />
                       5-10 min read
-                    </span>                    
+                    </span>  
+                    <span className="flex items-center gap-1">
+                      <Heart className="w-3 h-3" />
+                      {post.likes} Likes
+                    </span>                  
                   </div>
                 </div>
                 <div className="`shrink-0 self-center">

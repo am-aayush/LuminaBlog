@@ -15,31 +15,42 @@ import Avatar from "../components/ui/Avatar";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import appwriteService from "../appwrite/config";
 import parser from "html-react-parser";
+import { useSelector } from "react-redux";
 
 export default function BlogPostViewer() {
   const [progress, setProgress] = useState(0);
   const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(120);
+  const [likeCount, setLikeCount] = useState(0);
   const [bookmarked, setBookmarked] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [copied, setCopied] = useState(false);
   const { slug } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState(null);
+  const user = useSelector((state) => state.auth.userData);
+
   useEffect(() => {
     if (slug) {
       appwriteService.getPost(slug).then((res) => {
         if (res) {
           setPost(res);
+          setLikeCount(res.likes || 0);
         } else {
           navigate("/");
         }
       });
     }
   }, [slug, navigate]);
+
+  useEffect(() => {
+    if (post && user && post.likedBy) {
+      setLiked(post.likedBy.includes(user.$id));
+    }
+  }, [post, user]);
+
   const imageUrl = appwriteService.getFileView(post?.featuredImage);
 
-  console.log(post);
+  // console.log(post);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -66,6 +77,24 @@ export default function BlogPostViewer() {
       .getElementById("dummy-heading")
       ?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
+
+  const updateLikeCount = (newCount) => {
+    let increment = true;
+    if (!post || !user) return;
+    if(newCount < post.likes && !liked) return; // Prevent decrementing likes if not liked
+    if(newCount > post.likes && liked) return; // Prevent incrementing likes if already liked
+    if(newCount-1 === post.likes){
+      increment = false;
+    }
+    // console.log(increment)
+    appwriteService
+      .updateLikes(post.$id, newCount, user.$id, post.likedBy , increment)
+      .then((res) => {
+        if (res) {
+          setLikeCount(newCount);
+        }
+      });
+  };
 
   return (
     <div className="pt-16 min-h-screen">
@@ -173,8 +202,9 @@ export default function BlogPostViewer() {
               <div className="flex items-center gap-2 flex-wrap">
                 <button
                   onClick={() => {
-                    setLiked((prev) => !prev);
-                    setLikeCount((n) => (liked ? n - 1 : n + 1));
+                    if (!post || !user) return;
+                    updateLikeCount(likeCount + (liked ? -1 : 1));
+                    setLiked(!liked);
                   }}
                   className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm border transition-all duration-200"
                   style={
@@ -243,12 +273,12 @@ export default function BlogPostViewer() {
               >
                 {post?.title || "Title Section"}
               </h2>
-              <p
+              <span
                 className="text-slate-300 leading-[1.9] mb-6"
                 style={{ fontSize: "17px" }}
               >
                 {parser(post?.content || "Blog content will appear here.")}
-              </p>
+              </span>
             </div>
 
             {/* Tag footer */}
@@ -403,9 +433,7 @@ export default function BlogPostViewer() {
                     }}
                   />
                 </div>
-                <p className="text-[11px] text-slate-600 mt-2">
-                  5-10 min read
-                </p>
+                <p className="text-[11px] text-slate-600 mt-2">5-10 min read</p>
               </div>
 
               {/* Related posts */}

@@ -58,10 +58,7 @@ export class Service {
     }
   }
 
-  async updatePost(
-    documentId,
-    { title, slug, category, content, featuredImage, status },
-  ) {
+  async updatePost(documentId,{ title, slug, category, content, featuredImage, status },) {
     try {
       await this.databases.updateDocument(
         conf.appwriteDatabaseId,
@@ -136,9 +133,27 @@ export class Service {
 
   getFileView(fileID) {
     try {
-      return  this.bucket.getFileView(conf.appwriteBucketId, fileID);
+      return this.bucket.getFileView(conf.appwriteBucketId, fileID);
     } catch (error) {
-      console.log("Error while Viewing the File");
+      // console.log("Error while Viewing the File", error);
+    }
+  }
+
+  async updateLikes(documentID, likes, userId, likedBy, decrement=true) {
+    if (decrement) {
+      likedBy = likedBy.filter((id) => id !== userId);
+    } else {
+      likedBy.push(userId);
+    }
+    try {
+      return await this.databases.updateDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionId,
+        documentID,
+        { likes, likedBy },
+      );
+    } catch (error) {
+      console.error("Error while updating the likes");
     }
   }
 }
