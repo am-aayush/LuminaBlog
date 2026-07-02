@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+
+.tox .tox-menubar {
+  background-color: #181d2b !important;
+}
+.tox .tox-toolbar,
+.tox .tox-toolbar__primary {
+  background-color: #181d2b !important;
+}
+.tox .tox-edit-area__iframe .tox-editor-header .tox-editor-header {
+  background-color: #181d2b !important;
+}
+.tox-promotion{
+  background-color: #181d2b !important;
+}
+.tox:not(.tox-tinymce-inline) .tox-editor-header {
+  background-color: #181d2b !important;
+}
+
+
+@import "tailwindcss";
