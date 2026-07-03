@@ -275,24 +275,6 @@ Reusable UI components include:
 
 ---
 
-# 📸 Screenshots
-
-Add screenshots of:
-
-- Home Page
-- Post Page
-- Editor
-- Mobile View
-- Authentication Pages
-
-Example:
-
-```md
-![Home Page](./screenshots/home.png)
-```
-
----
-
 # 🚀 Future Improvements
 
 - Comment System
@@ -328,7 +310,7 @@ This project is licensed under the MIT License.
 
 # 👨‍💻 Author
 
-Developed with ❤️ by **Your Name**
+Developed with ❤️ by **Aayush**
 
 ---
 
