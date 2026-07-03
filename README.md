@@ -149,7 +149,7 @@ Designed with a clean UI and responsive layout, LuminaBlog works seamlessly acro
 ## 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/LuminaBlog.git
+git clone https://github.com/am-aayush/LuminaBlog.git
 ```
 
 ## 2️⃣ Navigate to Project Directory
