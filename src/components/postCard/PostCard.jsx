@@ -1,10 +1,11 @@
 import React from "react";
 import { CategoryBadge } from "../index";
-import { Clock, Heart , CircleUser  } from "lucide-react";
+import { Clock, Heart, CircleUser } from "lucide-react";
 import Avatar from "../ui/Avatar";
 import appwriteService from "../../appwrite/config";
+import parser from "html-react-parser";
 
-function PostCard({ post, onClick }) {
+function PostCard({ post }) {
   const imageUrl = appwriteService.getFileView(post.featuredImage);
   return (
     <div
@@ -13,7 +14,6 @@ function PostCard({ post, onClick }) {
         background: "rgba(255,255,255,0.025)",
         borderColor: "rgba(255,255,255,0.07)",
       }}
-      onClick={onClick}
       onMouseEnter={(e) => {
         e.currentTarget.style.background = "rgba(255,255,255,0.05)";
         e.currentTarget.style.borderColor = "rgba(59,130,246,0.22)";
@@ -41,7 +41,7 @@ function PostCard({ post, onClick }) {
           }}
         />
         <div className="absolute top-3 left-3">
-          <CategoryBadge category={"Technology"} />
+          <CategoryBadge category={post.category} />
         </div>
       </div>
 
@@ -53,12 +53,11 @@ function PostCard({ post, onClick }) {
           {post.title}
         </h3>
         <p className="text-slate-500 text-sm leading-relaxed line-clamp-2 mb-4 flex-1">
-          {post.content}
+          {parser(post.blogAbout)}
         </p>
-
         <div className="flex items-center justify-between mt-auto">
           <div className="flex items-center gap-2">
-            <CircleUser  />
+            <CircleUser />
             <div>
               <p className="text-xs font-medium text-slate-300">
                 {post.userName}

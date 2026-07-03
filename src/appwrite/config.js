@@ -58,9 +58,9 @@ export class Service {
     }
   }
 
-  async updatePost(documentId,{ title, slug, category, content, featuredImage, status },) {
+  async updatePost(documentId,{ title, slug, category, content, featuredImage, status , blogAbout }) {
     try {
-      await this.databases.updateDocument(
+      return await this.databases.updateDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
         documentId,
@@ -71,10 +71,11 @@ export class Service {
           category,
           featuredImage,
           status,
+          blogAbout,
         },
       );
     } catch (error) {
-      console.log("Error While Updating the Post  ");
+      console.log("Error While Updating the Post");
     }
   }
 
@@ -110,6 +111,17 @@ export class Service {
     } catch (error) {}
   }
 
+  async getMyPosts(userId){
+    try {
+      return await this.databases.listDocuments(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionId,
+        [Query.equal("userId",userId)]
+      )
+    } catch (error) {
+      
+    }
+  }
   //File Upload Services
 
   async uploadFile(file) {

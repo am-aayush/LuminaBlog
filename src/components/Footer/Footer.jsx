@@ -2,7 +2,13 @@ import React from 'react'
 
 const Footer = () => {
   return (
-    <div>Footer</div>
+   <>
+    <footer className="bg-gray-900 text-gray-400 py-4 text-center">
+      <p className="text-sm">
+        &copy; {new Date().getFullYear()} LuminaBlog. All rights reserved.
+      </p>
+    </footer>
+   </>
   )
 }
 

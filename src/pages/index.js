@@ -5,4 +5,5 @@ import Signup from "./Signup";
 import MakePost from "./MakePost";
 import ViewAllPost from "./ViewAllPost";
 import ViewPost from "./ViewPost"
-export {  EditPost, Home, Login, MakePost, Signup, ViewAllPost , ViewPost};
+import MyPosts from "./MyPosts";
+export {  EditPost, Home, Login, MakePost, Signup, ViewAllPost , ViewPost , MyPosts};

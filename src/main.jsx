@@ -17,6 +17,7 @@ import {
   Signup,
   ViewAllPost,
   ViewPost,
+  MyPosts,
 } from "./pages/index.js";
 import { AuthLayout } from "./components/index.js";
 import { Provider } from "react-redux";
@@ -47,6 +48,14 @@ const router = createBrowserRouter(
           element={
             <AuthLayout authentication={true}>
               <EditPost />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="myposts"
+          element={
+            <AuthLayout authentication={true}>
+              <MyPosts />
             </AuthLayout>
           }
         />

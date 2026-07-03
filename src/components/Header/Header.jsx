@@ -25,9 +25,7 @@ const Header = () => {
     { id: "add-post", slug: "/add-post", label: "Write", Icon: PlusSquare },
     { id: "view-posts", slug: "/all-posts", label: "Posts", Icon: BookOpen },
   ];
-    const dropdownItems = [
-    { id: "my-posts", label: "My Posts", Icon: FileText },
-  ];
+  const dropdownItems = [{ id: "my-posts", label: "My Posts", Icon: FileText }];
   const dispatch = useDispatch();
   const handleLogout = () => {
     authService.logout().then(() => {
@@ -106,117 +104,119 @@ const Header = () => {
               //     <LogOut className="w-5 h-5" />
               //   </button>
               // </div>
-               <div className="hidden md:flex items-center gap-2">
-            {/* User dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setDropdownOpen((v) => !v)}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm font-medium text-slate-300 hover:text-slate-100 transition-all duration-200 border border-transparent hover:border-white/[0.08]"
-                style={
-                  dropdownOpen
-                    ? {
-                        background: "rgba(255,255,255,0.06)",
-                        borderColor: "rgba(255,255,255,0.09)",
-                      }
-                    : {}
-                }
-              >
-                <CircleUser/>
-                <span className="hidden lg:inline">{user?.name || "UserName"}</span>
-                <ChevronDown
-                  className={`w-3.5 h-3.5 text-slate-500 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`}
-                />
-              </button>
-
-              {/* Dropdown panel */}
-              {dropdownOpen && (
-                <>
-                  {/* Click-away backdrop */}
-                  <div
-                    className="fixed inset-0 z-10"
-                    onClick={() => setDropdownOpen(false)}
-                  />
-                  <div
-                    className="absolute right-0 top-full mt-2 w-52 rounded-2xl border overflow-hidden z-20"
-                    style={{
-                      background: "rgba(22,30,46,0.97)",
-                      backdropFilter: "blur(24px)",
-                      borderColor: "rgba(255,255,255,0.09)",
-                      boxShadow:
-                        "0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04)",
-                    }}
+              <div className="hidden md:flex items-center gap-2">
+                {/* User dropdown */}
+                <div className="relative">
+                  <button
+                    onClick={() => setDropdownOpen((v) => !v)}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm font-medium text-slate-300 hover:text-slate-100 transition-all duration-200 border border-transparent hover:border-white/[0.08]"
+                    style={
+                      dropdownOpen
+                        ? {
+                            background: "rgba(255,255,255,0.06)",
+                            borderColor: "rgba(255,255,255,0.09)",
+                          }
+                        : {}
+                    }
                   >
-                    {/* Profile header */}
-                    <div
-                      className="px-4 py-3 border-b"
-                      style={{ borderColor: "rgba(255,255,255,0.07)" }}
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <CircleUser />
-                        <div className="min-w-0">
-                          <p className="text-sm font-semibold text-slate-100 truncate">
-                            {user?.name || "UserName"}
-                          </p>
-                          <p className="text-[11px] text-slate-500 truncate">
-                            {user?.email || "example@example.com"}
-                          </p>
+                    <CircleUser />
+                    <span className="hidden lg:inline">
+                      {user?.name || "UserName"}
+                    </span>
+                    <ChevronDown
+                      className={`w-3.5 h-3.5 text-slate-500 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`}
+                    />
+                  </button>
+
+                  {/* Dropdown panel */}
+                  {dropdownOpen && (
+                    <>
+                      {/* Click-away backdrop */}
+                      <div
+                        className="fixed inset-0 z-10"
+                        onClick={() => setDropdownOpen(false)}
+                      />
+                      <div
+                        className="absolute right-0 top-full mt-2 w-52 rounded-2xl border overflow-hidden z-20"
+                        style={{
+                          background: "rgba(22,30,46,0.97)",
+                          backdropFilter: "blur(24px)",
+                          borderColor: "rgba(255,255,255,0.09)",
+                          boxShadow:
+                            "0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04)",
+                        }}
+                      >
+                        {/* Profile header */}
+                        <div
+                          className="px-4 py-3 border-b"
+                          style={{ borderColor: "rgba(255,255,255,0.07)" }}
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <CircleUser />
+                            <div className="min-w-0">
+                              <p className="text-sm font-semibold text-slate-100 truncate">
+                                {user?.name || "UserName"}
+                              </p>
+                              <p className="text-[11px] text-slate-500 truncate">
+                                {user?.email || "example@example.com"}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Menu items */}
+                        <div className="p-1.5">
+                          {dropdownItems.map(({ id, label, Icon }) => (
+                            <Link to={"myposts"} key={id}>
+                              <button
+                                onClick={() => {
+                                  setDropdownOpen(false);
+                                }}
+                                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-slate-400 hover:text-slate-100 transition-all duration-150 group"
+                                onMouseEnter={(e) =>
+                                  (e.currentTarget.style.background =
+                                    "rgba(255,255,255,0.06)")
+                                }
+                                onMouseLeave={(e) =>
+                                  (e.currentTarget.style.background =
+                                    "transparent")
+                                }
+                              >
+                                <Icon className="w-4 h-4 text-slate-500 group-hover:text-blue-400 transition-colors" />
+                                {label}
+                              </button>
+                            </Link>
+                          ))}
+                        </div>
+
+                        {/* Divider + logout */}
+                        <div
+                          className="p-1.5 border-t"
+                          style={{ borderColor: "rgba(255,255,255,0.07)" }}
+                        >
+                          <button
+                            onClick={() => {
+                              setDropdownOpen(false);
+                              handleLogout();
+                            }}
+                            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-slate-500 hover:text-rose-400 transition-all duration-150"
+                            onMouseEnter={(e) =>
+                              (e.currentTarget.style.background =
+                                "rgba(239,68,68,0.07)")
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.style.background = "transparent")
+                            }
+                          >
+                            <LogOut className="w-4 h-4" />
+                            Sign out
+                          </button>
                         </div>
                       </div>
-                    </div>
-
-                    {/* Menu items */}
-                    <div className="p-1.5">
-                      {dropdownItems.map(({ id, label, Icon }) => (
-                        <button
-                          key={id}
-                          onClick={() => {                          
-                            setDropdownOpen(false);
-                          }}
-                          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-slate-400 hover:text-slate-100 transition-all duration-150 group"
-                          onMouseEnter={(e) =>
-                            (e.currentTarget.style.background =
-                              "rgba(255,255,255,0.06)")
-                          }
-                          onMouseLeave={(e) =>
-                            (e.currentTarget.style.background = "transparent")
-                          }
-                        >
-                          <Icon className="w-4 h-4 text-slate-500 group-hover:text-blue-400 transition-colors" />
-                          {label}
-                        </button>
-                      ))}
-                    </div>
-
-                    {/* Divider + logout */}
-                    <div
-                      className="p-1.5 border-t"
-                      style={{ borderColor: "rgba(255,255,255,0.07)" }}
-                    >
-                      <button
-                        onClick={() => {
-                          setDropdownOpen(false);
-                          handleLogout();
-                        }}
-                        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-slate-500 hover:text-rose-400 transition-all duration-150"
-                        onMouseEnter={(e) =>
-                          (e.currentTarget.style.background =
-                            "rgba(239,68,68,0.07)")
-                        }
-                        onMouseLeave={(e) =>
-                          (e.currentTarget.style.background = "transparent")
-                        }
-                      >
-                        <LogOut className="w-4 h-4" />
-                        Sign out
-                      </button>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-
-
+                    </>
+                  )}
+                </div>
+              </div>
             ) : (
               <div className="hidden md:flex items-center gap-3">
                 <Link to={"/login"}>

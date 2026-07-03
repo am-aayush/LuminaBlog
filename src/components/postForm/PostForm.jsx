@@ -46,6 +46,11 @@ function PostForm({ post }) {
     required: true,
   });
 
+  const handleImageSelect = (files) => {
+    if (!files || files.length === 0) return;
+    setValue("image", files, { shouldValidate: true, shouldDirty: true });
+  };
+
   const userData = useSelector((state) => state.auth.userData);
   const submitWithStatus = (status) =>
     handleSubmit((data) => submit({ ...data, status }))();
@@ -71,7 +76,6 @@ function PostForm({ post }) {
   };
 
   const selectedImage = watch("image");
-
   const selectedImageName = selectedImage?.[0]?.name;
   const slugTransform = useCallback((value) => {
     if (value && typeof value === "string") {
@@ -132,11 +136,15 @@ function PostForm({ post }) {
               style={{
                 background: "rgba(255,255,255,0.025)",
                 borderColor: "rgba(255,255,255,0.07)",
-              }}>
+              }}
+            >
+              <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-widest mb-2">
+                Excerpt / Summary
+              </label>
               <input
                 type="text"
-                placeholder="About the blog..."
-                className="w-full bg-transparent text-2xl font-bold text-slate-100 placeholder-slate-700 focus:outline-none"
+                placeholder="Short description shown in post cards..."
+                className="w-full bg-transparent  font-bold text-slate-100 placeholder-slate-700 focus:outline-none"
                 style={{ fontFamily: "var(--font-display)" }}
                 {...register("blogAbout", { required: true })}
               />
@@ -208,6 +216,7 @@ function PostForm({ post }) {
                   onDrop={(e) => {
                     e.preventDefault();
                     setDragOver(false);
+                    handleImageSelect(e.dataTransfer.files);
                   }}
                   onClick={() => fileRef.current?.click()}
                   className="border-2 border-dashed rounded-xl py-7 flex flex-col items-center gap-2 cursor-pointer transition-all duration-200"
@@ -236,19 +245,22 @@ function PostForm({ post }) {
                   <Upload
                     className={`w-5 h-5 transition-colors ${dragOver ? "text-blue-400" : "text-slate-600"}`}
                   />
-                  <p className="text-xs text-slate-500">
-                    Drop image or{" "}
-                    <span className="text-blue-400 font-medium">
-                      browse files
-                    </span>
-                  </p>
-                  <p className="text-[11px] text-slate-700">
-                    PNG, JPG up to 5 MB
-                  </p>
-                  {selectedImageName && (
+                  {selectedImageName ? (
                     <p className="mt-1 max-w-full truncate text-xs font-medium text-slate-300">
                       Selected: {selectedImageName}
                     </p>
+                  ) : (
+                    <>
+                      <p className="text-xs text-slate-500">
+                        Drop image or{" "}
+                        <span className="text-blue-400 font-medium">
+                          browse files
+                        </span>
+                      </p>
+                      <p className="text-[11px] text-slate-700">
+                        PNG, JPG up to 5 MB
+                      </p>
+                    </>
                   )}
                 </div>
                 <input
@@ -277,27 +289,6 @@ function PostForm({ post }) {
                 className="flex items-center gap-1 px-4 py-3 border-b flex-wrap"
                 style={{ borderColor: "rgba(255,255,255,0.06)" }}
               >
-                {/* {toolbarItems.map(({ Icon, label }) => (
-                <button
-                  key={label}
-                  title={label}
-                  className="p-2 rounded-lg text-slate-600 transition-all duration-150"
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "rgba(255,255,255,0.07)";
-                    e.currentTarget.style.color = "#E2E8F0";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "transparent";
-                    e.currentTarget.style.color = "";
-                  }}
-                >
-                  <Icon className="w-4 h-4" />
-                </button>
-              ))}
-              <div
-                className="w-px h-4 mx-1"
-                style={{ background: "rgba(255,255,255,0.08)" }}
-              /> */}
                 <span
                   className="text-[11px] ml-auto px-2 py-0.5 rounded-md font-mono"
                   style={{

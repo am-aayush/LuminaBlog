@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 
 export default function BlogPostViewer() {
   const [progress, setProgress] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [bookmarked, setBookmarked] = useState(false);
@@ -35,9 +36,14 @@ export default function BlogPostViewer() {
         if (res) {
           setPost(res);
           setLikeCount(res.likes || 0);
+          setIsLoading(false);
         } else {
+          setIsLoading(false);
           navigate("/");
         }
+      }).catch(() => {
+        setIsLoading(false);
+        navigate("/");
       });
     }
   }, [slug, navigate]);
@@ -81,14 +87,14 @@ export default function BlogPostViewer() {
   const updateLikeCount = (newCount) => {
     let increment = true;
     if (!post || !user) return;
-    if(newCount < post.likes && !liked) return; // Prevent decrementing likes if not liked
-    if(newCount > post.likes && liked) return; // Prevent incrementing likes if already liked
-    if(newCount-1 === post.likes){
+    if (newCount < post.likes && !liked) return; // Prevent decrementing likes if not liked
+    if (newCount > post.likes && liked) return; // Prevent incrementing likes if already liked
+    if (newCount - 1 === post.likes) {
       increment = false;
     }
     // console.log(increment)
     appwriteService
-      .updateLikes(post.$id, newCount, user.$id, post.likedBy , increment)
+      .updateLikes(post.$id, newCount, user.$id, post.likedBy, increment)
       .then((res) => {
         if (res) {
           setLikeCount(newCount);
@@ -96,7 +102,88 @@ export default function BlogPostViewer() {
       });
   };
 
+  const LoadingSkeleton = () => (
+    <div className="animate-pulse">
+      <div className="relative h-105 bg-[#121826] overflow-hidden">
+        <div className="absolute inset-0 bg-white/5" />
+        <div className="absolute top-6 left-0 right-0 max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="h-10 w-36 rounded-[10px] bg-white/10" />
+        </div>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        <div className="grid lg:grid-cols-[1fr_248px] gap-14 -mt-20 relative z-10">
+          <article className="min-w-0">
+            <div className="mb-8 rounded-2xl border p-6" style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(255,255,255,0.07)" }}>
+              <div className="h-10 w-3/4 rounded bg-white/10 mb-4" />
+              <div className="h-5 w-full rounded bg-white/10 mb-2" />
+              <div className="h-5 w-5/6 rounded bg-white/10 mb-6" />
+              <div className="flex flex-wrap items-center gap-4 pb-6 mb-6 border-b" style={{ borderColor: "rgba(255,255,255,0.07)" }}>
+                <div className="h-12 w-56 rounded bg-white/10" />
+                <div className="ml-auto h-4 w-28 rounded bg-white/10" />
+              </div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <div className="h-10 w-24 rounded-xl bg-white/10" />
+                <div className="h-10 w-24 rounded-xl bg-white/10" />
+                <div className="h-10 w-24 rounded-xl bg-white/10" />
+              </div>
+            </div>
+
+            <div className="mb-8 rounded-2xl border p-6" style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(255,255,255,0.07)" }}>
+              <div className="h-6 w-40 rounded bg-white/10 mb-5" />
+              <div className="space-y-3">
+                <div className="h-4 w-full rounded bg-white/10" />
+                <div className="h-4 w-11/12 rounded bg-white/10" />
+                <div className="h-4 w-10/12 rounded bg-white/10" />
+                <div className="h-4 w-9/12 rounded bg-white/10" />
+                <div className="h-4 w-8/12 rounded bg-white/10" />
+              </div>
+            </div>
+
+            <div className="mt-8 p-6 rounded-2xl border flex gap-4 items-start" style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(255,255,255,0.07)" }}>
+              <div className="w-10 h-10 rounded-full bg-white/10 shrink-0" />
+              <div className="flex-1 space-y-3">
+                <div className="h-4 w-40 rounded bg-white/10" />
+                <div className="h-4 w-full rounded bg-white/10" />
+                <div className="h-4 w-4/5 rounded bg-white/10" />
+                <div className="h-8 w-32 rounded-xl bg-white/10" />
+              </div>
+            </div>
+          </article>
+
+          <aside className="hidden lg:block">
+            <div className="sticky top-28 space-y-4">
+              <div className="rounded-2xl p-5 border animate-pulse" style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(255,255,255,0.07)" }}>
+                <div className="h-3 w-20 rounded bg-white/10 mb-4" />
+                <div className="space-y-3">
+                  <div className="h-4 w-full rounded bg-white/10" />
+                  <div className="h-4 w-4/5 rounded bg-white/10" />
+                  <div className="h-4 w-3/5 rounded bg-white/10" />
+                </div>
+              </div>
+              <div className="rounded-2xl p-5 border animate-pulse" style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(255,255,255,0.07)" }}>
+                <div className="h-3 w-24 rounded bg-white/10 mb-4" />
+                <div className="h-2.5 w-full rounded-full bg-white/10" />
+                <div className="h-3 w-20 rounded bg-white/10 mt-3" />
+              </div>
+              <div className="rounded-2xl p-5 border animate-pulse" style={{ background: "rgba(255,255,255,0.025)", borderColor: "rgba(255,255,255,0.07)" }}>
+                <div className="h-3 w-16 rounded bg-white/10 mb-3" />
+                <div className="flex gap-2">
+                  <div className="h-10 flex-1 rounded-xl bg-white/10" />
+                  <div className="h-10 flex-1 rounded-xl bg-white/10" />
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
+    isLoading ? (
+      <LoadingSkeleton />
+    ) : (
     <div className="pt-16 min-h-screen">
       {/* Reading progress bar */}
       <div
@@ -508,10 +595,11 @@ export default function BlogPostViewer() {
               </div>
             </div>
           </aside>
+          
         </div>
 
-        {/* Continue reading */}
       </div>
     </div>
+    )
   );
 }
