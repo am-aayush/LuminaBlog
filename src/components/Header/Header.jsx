@@ -109,7 +109,7 @@ const Header = () => {
                 <div className="relative">
                   <button
                     onClick={() => setDropdownOpen((v) => !v)}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm font-medium text-slate-300 hover:text-slate-100 transition-all duration-200 border border-transparent hover:border-white/[0.08]"
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm font-medium text-slate-300 hover:text-slate-100 transition-all duration-200 border border-transparent hover:border-white/8 cursor-pointer"
                     style={
                       dropdownOpen
                         ? {
@@ -172,7 +172,7 @@ const Header = () => {
                                 onClick={() => {
                                   setDropdownOpen(false);
                                 }}
-                                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-slate-400 hover:text-slate-100 transition-all duration-150 group"
+                                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-slate-400 hover:text-slate-100 transition-all duration-150 group cursor-pointer"
                                 onMouseEnter={(e) =>
                                   (e.currentTarget.style.background =
                                     "rgba(255,255,255,0.06)")
@@ -199,7 +199,7 @@ const Header = () => {
                               setDropdownOpen(false);
                               handleLogout();
                             }}
-                            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-slate-500 hover:text-rose-400 transition-all duration-150"
+                            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-slate-500 hover:text-rose-400 transition-all duration-150 cursor-pointer"
                             onMouseEnter={(e) =>
                               (e.currentTarget.style.background =
                                 "rgba(239,68,68,0.07)")
